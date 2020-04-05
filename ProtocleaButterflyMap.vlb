@@ -1,0 +1,16 @@
+﻿[btnLoad]
+Coordinates=74,10,61,58
+
+[Panel1]
+Coordinates=145,10,55,36
+
+[lblPath]
+Coordinates=10,10,54,58
+
+[OpenDialog1]
+Coordinates=153,56,90,36
+
+[]
+Coordinates=10,78,74,36
+Visible=True
+

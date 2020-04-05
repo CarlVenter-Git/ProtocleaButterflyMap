@@ -1,0 +1,100 @@
+unit ProtocleaButterflyMap;
+
+interface
+
+uses
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
+  FMX.Controls.Presentation, FMX.StdCtrls, ComObj;
+
+type
+  TForm1 = class(TForm)
+    btnLoad: TButton;
+    OpenDialog1: TOpenDialog;
+    Panel1: TPanel;
+    lblPath: TLabel;
+    btnPlotPoints: TButton;
+    procedure btnLoadClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+type
+  sightingRecord = record
+    rec_nr: string;
+    genus: string;
+    species: string;
+    subspecies: string;
+    rec_date: string;
+    province: string;
+    latitude: string;
+    longitude: string;
+end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.fmx}
+
+procedure TForm1.btnLoadClick(Sender: TObject);
+const
+  xlCellTypeLastCell = $0000000B;
+var
+  excel, book, sheet, range: OLEVariant;
+  selectedFilePath: string;
+  sightings: array of sightingRecord;
+  x, y, numRows: integer;
+
+begin
+
+  try
+    if OpenDialog1.Execute then
+      selectedFilePath := OpenDialog1.FileName;
+  finally
+    //OpenDialog1.Free; Causes issues when attempting to open the dialog more than once
+  end;
+
+  if selectedFilePath <> '' then
+  begin
+    lblPath.Text := selectedFilePath;
+
+    try
+      excel := CreateOleObject('Excel.Application');
+
+      excel.Visible := True;
+      excel.DisplayAlerts := False;
+      book := excel.Workbooks.Open(selectedFilePath);
+      sheet := book.Worksheets.Item['Sheet1'];
+
+      sheet.Cells.SpecialCells(xlCellTypeLastCell, EmptyParam).Activate;
+      numRows := excel.ActiveCell.Row;
+
+      SetLength(sightings, numRows);
+
+      for x := 0 to data.GetArrayLength do
+      begin
+        sightings[x].rec_nr := excel.Cells.Item[x + 2, 1].Value;
+        sightings[x].genus := excel.Cells.Item[x + 2, 2].Value;
+        sightings[x].species := excel.Cells.Item[x + 2, 3].Value;
+        sightings[x].subspecies := excel.Cells.Item[x + 2, 4].Value;
+        sightings[x].rec_date := excel.Cells.Item[x + 2, 5].Value;
+        sightings[x].province := excel.Cells.Item[x + 2, 6].Value;
+        sightings[x].latitude := excel.Cells.Item[x + 2, 7].Value;
+        sightings[x].longitude := excel.Cells.Item[x + 2, 8].Value;
+      end;
+
+    finally
+      excel.Quit;
+      excel := Unassigned;
+    end;
+
+
+  end;
+
+end;
+
+end.

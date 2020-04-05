@@ -1,0 +1,74 @@
+unit ProtocleaButterflyMap;
+
+interface
+
+uses
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Maps,
+  FMX.Controls.Presentation, FMX.StdCtrls, ComObj, Data.DB, Datasnap.DBClient,
+  System.Rtti, FMX.Grid.Style, FMX.ScrollBox, FMX.Grid;
+
+type
+  TForm1 = class(TForm)
+    btnLoad: TButton;
+    OpenDialog1: TOpenDialog;
+    Panel1: TPanel;
+    lblPath: TLabel;
+    btnPlotPoints: TButton;
+    procedure btnLoadClick(Sender: TObject);
+    procedure btnPlotPointsClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+  selectedFilePath: string;
+implementation
+
+{$R *.fmx}
+
+procedure TForm1.btnLoadClick(Sender: TObject);
+
+begin
+
+  try
+    if OpenDialog1.Execute then
+      selectedFilePath := OpenDialog1.FileName;
+  finally
+    //OpenDialog1.Free; Causes issues when attempting to open the dialog more than once
+  end;
+
+  lblPath.Text := selectedFilePath;
+
+end;
+
+procedure TForm1.btnPlotPointsClick(Sender: TObject);
+var
+  excel, book, sheet, range: OLEVariant;
+  data: Variant;
+  x, y: integer;
+
+begin
+  if selectedFilePath <> '' then
+    begin
+      try
+          excel := CreateOleObject('Excel.Application');
+
+          excel.Visible := False;
+          excel.DisplayAlerts := False;
+          book := excel.Workbooks.Open(selectedFilePath);
+          sheet := book.Worksheets.Item['Sheet1'];
+
+          data := sheet.UsedRange.Value;
+
+        finally
+          excel.Quit;
+          excel := Unassigned;
+        end;
+    end;
+end;
+
+end.
