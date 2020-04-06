@@ -1,0 +1,84 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  Caption = 'Butterfly Map'
+  ClientHeight = 651
+  ClientWidth = 931
+  Position = ScreenCenter
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  ShowFullScreenIcon = True
+  DesignerMasterStyle = 0
+  object btnLoad: TButton
+    Anchors = [akTop, akRight]
+    Position.X = 651.000000000000000000
+    Position.Y = 16.000000000000000000
+    Size.Width = 73.000000000000000000
+    Size.Height = 25.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    Text = 'Load Data'
+    OnClick = btnLoadClick
+  end
+  object Panel1: TPanel
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    Size.Width = 637.000000000000000000
+    Size.Height = 652.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 2
+    object Image1: TImage
+      MultiResBitmap = <
+        item
+        end>
+      Anchors = [akLeft, akTop, akRight, akBottom]
+      Size.Width = 633.000000000000000000
+      Size.Height = 649.000000000000000000
+      Size.PlatformDefault = False
+    end
+  end
+  object lblPath: TLabel
+    Anchors = [akTop, akRight]
+    Position.X = 651.000000000000000000
+    Position.Y = 48.000000000000000000
+    Size.Width = 266.000000000000000000
+    Size.Height = 33.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 3
+  end
+  object OpenDialog1: TOpenDialog
+    Filter = 'Excel Files (*.xlsx)|*.xlsx'
+    InitialDir = 'C:\'
+    Title = 'Select File'
+    Left = 24
+    Top = 8
+  end
+  object btnPlotPoints: TButton
+    Anchors = [akTop, akRight]
+    Position.X = 651.000000000000000000
+    Position.Y = 88.000000000000000000
+    Size.Width = 73.000000000000000000
+    Size.Height = 25.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 5
+    Text = 'Plot Points'
+    OnClick = btnPlotPointsClick
+  end
+  object IdHTTP1: TIdHTTP
+    AllowCookies = True
+    ProxyParams.BasicAuthentication = False
+    ProxyParams.ProxyPort = 0
+    Request.ContentLength = -1
+    Request.ContentRangeEnd = -1
+    Request.ContentRangeStart = -1
+    Request.ContentRangeInstanceLength = -1
+    Request.Accept = 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    Request.BasicAuthentication = False
+    Request.UserAgent = 'Mozilla/3.0 (compatible; Indy Library)'
+    Request.Ranges.Units = 'bytes'
+    Request.Ranges = <>
+    HTTPOptions = [hoForceEncodeParams]
+    Left = 96
+    Top = 8
+  end
+end
