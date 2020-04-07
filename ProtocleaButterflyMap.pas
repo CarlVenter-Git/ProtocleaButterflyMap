@@ -61,10 +61,10 @@ procedure TForm1.btnLoadClick(Sender: TObject);
 var
   excel, book, sheet, range: OLEVariant;
   selectedFilePath: string;
-  provinces, yearStrings: array of string;
-  years: array of TDateTime;
-  match: boolean;
-  x, y, i, j, yearIndex, numRows, numColumns: integer;
+  provinces: array of string;
+  years, months: array of TDateTime;
+  yearFound, monthFound, provinceFound: boolean;
+  x, y, i, j, numRows(*, numColumns*): integer;
 
 begin
 
@@ -88,13 +88,12 @@ begin
       range := sheet.UsedRange;
 
       numRows := range.Rows.Count;
-      numColumns := range.Columns.Count;
-      yearIndex := 0;
+      //numColumns := range.Columns.Count; unused in this case
 
       //Ignore the first line to make array correct size
       SetLength(sightings, numRows - 1);
       Setlength(years, 50); //I am making an assumption here, this would cause issues if we are looking at more than 50 years of data
-      Setlength(yearStrings, 50);
+      SetLength(months, 12);
       SetLength(provinces, 9); //I am more comfortable making this assumption
 
       for x := 2 to numRows do //Start at index 2 to skip the heading
@@ -112,33 +111,55 @@ begin
         sightings[y].latitude := sheet.Cells.Item[x, 7];
         sightings[y].longitude := sheet.Cells.Item[x, 8];
 
-        match := false;
+        yearFound := false;
+        monthFound := false;
+        provinceFound := false;
 
         //This needs to be extracted, why is there not a Contains method for arrays??
         for i := Low(years) to High(years) do
         begin
           if DateUtils.YearOf(years[i]) = DateUtils.YearOf(sightings[y].rec_date) then
           begin
-            match := true;
-            break;
+            yearFound := true;
           end;
         end;
 
-        if match = false then
+        for i := Low(months) to High(months) do
         begin
-          yearStrings[yearIndex] :=  DateUtils.YearOf(sightings[y].rec_date).ToString;
-          yearIndex := yearIndex + 1;
+          if DateUtils.MonthOf(months[i]) = DateUtils.MonthOf(sightings[y].rec_date) then
+          begin
+            monthFound := true;
+          end;
+        end;
+
+        for i := Low(provinces) to High(provinces) do
+        begin
+          if provinces[i] = sightings[y].province then
+          begin
+            provinceFound := true;
+          end;
+        end;
+
+
+        if yearFound = false then
+        begin
+          cmbYear.Items.Add(DateUtils.YearOf(sightings[y].rec_date).ToString);
+        end;
+
+        if monthFound = false then
+        begin
+          cmbMonth.Items.Add(DateUtils.MonthOf(sightings[y].rec_date).ToString);
+        end;
+
+        if provinceFound = false then
+        begin
+          provinces[i] := sightings[y].province;
+          cmbProvince.Items.Add(sightings[y].province);
         end;
 
       end;
 
       lblPath.Text := selectedFilePath + ' Successfully Loaded';
-
-      for j := 0 to High(yearStrings) do
-      begin
-        if yearStrings[j] <> '' then
-          cmbYear.Items.Add(yearStrings[j]);
-      end;
 
     finally
       excel.Quit;
@@ -150,23 +171,38 @@ end;
 
 procedure TForm1.btnPlotPointsClick(Sender: TObject);
 const
+  key = '';
   prefix = 'https://maps.googleapis.com/maps/api/staticmap?';
+  markerColour = 'markers=color:red';
 var
   ms: TMemoryStream;
-  bitmap: TBitmap;
-  url: string;
+  url, province, markerString: string;
+  month, year: TDateTime;
   x, y: single;
+  i: integer;
 begin
   x := Panel1.Size.Width;
   y := Panel1.Size.Height;
+  markerString := '';
 
-  url := prefix + 'center=Cape+Town,Western+Cape&zoom=20&size=' +
+  for i := Low(sightings) to High(sightings) do
+  begin
+    if (sightings[i].province = cmbProvince.Selected.Text) and
+    (DateUtils.YearOf(sightings[i].rec_date).ToString = cmbYear.Selected.Text) and
+    (DateUtils.MonthOf(sightings[i].rec_date).ToString = cmbMonth.Selected.Text) then
+    begin
+      markerString := markerString + markerColour + '|label:' + sightings[i].rec_nr +
+      '|' + sightings[i].latitude + ',' + sightings[i].longitude + '&';
+    end;
+
+  end;
+
+  //this URL cannot be more than 2048 characters, this needs to be taken into account
+  url := prefix + 'center=South+Africa&zoom=5&size=' +
                   x.ToString + 'x' + y.ToString + '&maptype=roadmap&'+
-                  'markers=color:red|label:C|40.718217,-73.998284%27&'+
-                  'key=AIzaSyBo2oV0QLZwhOsLjeV08m04nA4xlRd0PxA';
+                  markerString + 'key=' + key;
 
   ms := TMemoryStream.Create;
-  bitmap := TBitmap.Create;
 
   try
     idHTTP1.Get(url, ms);
