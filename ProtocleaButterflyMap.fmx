@@ -3,7 +3,7 @@ object Form1: TForm1
   Top = 0
   Caption = 'Butterfly Map'
   ClientHeight = 518
-  ClientWidth = 844
+  ClientWidth = 846
   Position = ScreenCenter
   FormFactor.Width = 320
   FormFactor.Height = 480
@@ -12,9 +12,9 @@ object Form1: TForm1
   DesignerMasterStyle = 0
   object btnLoad: TButton
     Anchors = [akTop, akRight]
-    Position.X = 648.000000000000000000
+    Position.X = 562.000000000000000000
     Position.Y = 16.000000000000000000
-    Size.Width = 73.000000000000000000
+    Size.Width = 153.000000000000000000
     Size.Height = 25.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
@@ -23,7 +23,7 @@ object Form1: TForm1
   end
   object Panel1: TPanel
     Anchors = [akLeft, akTop, akRight, akBottom]
-    Size.Width = 550.000000000000000000
+    Size.Width = 552.000000000000000000
     Size.Height = 519.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 2
@@ -32,15 +32,15 @@ object Form1: TForm1
         item
         end>
       Anchors = [akLeft, akTop, akRight, akBottom]
-      Size.Width = 546.000000000000000000
+      Size.Width = 548.000000000000000000
       Size.Height = 516.000000000000000000
       Size.PlatformDefault = False
     end
   end
   object lblPath: TLabel
     Anchors = [akTop, akRight]
-    Position.X = 552.000000000000000000
-    Position.Y = 48.000000000000000000
+    Position.X = 557.000000000000000000
+    Position.Y = 144.000000000000000000
     Size.Width = 271.000000000000000000
     Size.Height = 33.000000000000000000
     Size.PlatformDefault = False
@@ -55,9 +55,9 @@ object Form1: TForm1
   end
   object btnPlotPoints: TButton
     Anchors = [akTop, akRight]
-    Position.X = 648.000000000000000000
-    Position.Y = 200.000000000000000000
-    Size.Width = 73.000000000000000000
+    Position.X = 562.000000000000000000
+    Position.Y = 48.000000000000000000
+    Size.Width = 153.000000000000000000
     Size.Height = 25.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 5
@@ -66,8 +66,8 @@ object Form1: TForm1
   end
   object cmbYear: TComboBox
     Anchors = [akTop, akRight]
-    Position.X = 648.000000000000000000
-    Position.Y = 88.000000000000000000
+    Position.X = 658.000000000000000000
+    Position.Y = 208.000000000000000000
     Size.Width = 149.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
@@ -75,8 +75,8 @@ object Form1: TForm1
   end
   object cmbMonth: TComboBox
     Anchors = [akTop, akRight]
-    Position.X = 648.000000000000000000
-    Position.Y = 120.000000000000000000
+    Position.X = 658.000000000000000000
+    Position.Y = 240.000000000000000000
     Size.Width = 149.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
@@ -84,8 +84,8 @@ object Form1: TForm1
   end
   object cmbProvince: TComboBox
     Anchors = [akTop, akRight]
-    Position.X = 648.000000000000000000
-    Position.Y = 152.000000000000000000
+    Position.X = 658.000000000000000000
+    Position.Y = 272.000000000000000000
     Size.Width = 149.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
@@ -93,8 +93,8 @@ object Form1: TForm1
   end
   object Label1: TLabel
     Anchors = [akTop, akRight]
-    Position.X = 556.000000000000000000
-    Position.Y = 88.000000000000000000
+    Position.X = 566.000000000000000000
+    Position.Y = 208.000000000000000000
     Size.Width = 89.000000000000000000
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
@@ -103,8 +103,8 @@ object Form1: TForm1
   end
   object Label2: TLabel
     Anchors = [akTop, akRight]
-    Position.X = 556.000000000000000000
-    Position.Y = 120.000000000000000000
+    Position.X = 566.000000000000000000
+    Position.Y = 240.000000000000000000
     Size.Width = 89.000000000000000000
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
@@ -113,8 +113,8 @@ object Form1: TForm1
   end
   object Label3: TLabel
     Anchors = [akTop, akRight]
-    Position.X = 556.000000000000000000
-    Position.Y = 152.000000000000000000
+    Position.X = 566.000000000000000000
+    Position.Y = 272.000000000000000000
     Size.Width = 89.000000000000000000
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
@@ -123,9 +123,9 @@ object Form1: TForm1
   end
   object btnVerify: TButton
     Anchors = [akTop, akRight]
-    Position.X = 648.000000000000000000
-    Position.Y = 248.000000000000000000
-    Size.Width = 73.000000000000000000
+    Position.X = 562.000000000000000000
+    Position.Y = 80.000000000000000000
+    Size.Width = 153.000000000000000000
     Size.Height = 25.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 15
@@ -133,9 +133,9 @@ object Form1: TForm1
   end
   object Button1: TButton
     Anchors = [akTop, akRight]
-    Position.X = 648.000000000000000000
-    Position.Y = 295.000000000000000000
-    Size.Width = 73.000000000000000000
+    Position.X = 562.000000000000000000
+    Position.Y = 111.000000000000000000
+    Size.Width = 153.000000000000000000
     Size.Height = 25.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 16
@@ -143,7 +143,7 @@ object Form1: TForm1
   end
   object Button2: TButton
     Anchors = [akRight, akBottom]
-    Position.X = 734.000000000000000000
+    Position.X = 736.000000000000000000
     Position.Y = 467.000000000000000000
     Size.Width = 73.000000000000000000
     Size.Height = 25.000000000000000000

@@ -1,12 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>1899 12 30 00:00:00.000.891,E:\Documents\Embarcadero\Studio\Projects\Unit1.fmx=E:\Documents\Embarcadero\Studio\Projects\ProtocleaButterflyMap.fmx</Transaction>
-    <Transaction>1899 12 30 00:00:00.000.901,=E:\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>1899 12 30 00:00:00.000.891,E:\Documents\Embarcadero\Studio\Projects\Unit1.pas=E:\Documents\Embarcadero\Studio\Projects\ProtocleaButterflyMap.pas</Transaction>
     <Transaction>1899 12 30 00:00:00.000.035,=E:\Documents\Embarcadero\Studio\Projects\ProtocleaButterflyMap\Untitled1.js</Transaction>
-    <Transaction>1899 12 30 00:00:00.000.645,E:\Documents\Embarcadero\Studio\Projects\Project1.dproj=E:\Documents\Embarcadero\Studio\Projects\ProtocleaButterflyMap\Main.dproj</Transaction>
-    <Transaction>1899 12 30 00:00:00.000.899,E:\Documents\Embarcadero\Studio\Projects\ProtocleaButterflyMap.fmx=E:\Documents\Embarcadero\Studio\Projects\ProtocleaButterflyMap\ProtocleaButterflyMap.fmx</Transaction>
-    <Transaction>1899 12 30 00:00:00.000.899,E:\Documents\Embarcadero\Studio\Projects\ProtocleaButterflyMap.pas=E:\Documents\Embarcadero\Studio\Projects\ProtocleaButterflyMap\ProtocleaButterflyMap.pas</Transaction>
+    <Transaction>1899 12 30 00:00:00.000.901,=E:\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899 12 30 00:00:00.000.645,E:\Documents\Embarcadero\Studio\Projects\ProtocleaButterflyMap\Main.dproj=E:\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>1899 12 30 00:00:00.000.891,E:\Documents\Embarcadero\Studio\Projects\ProtocleaButterflyMap.fmx=E:\Documents\Embarcadero\Studio\Projects\Unit1.fmx</Transaction>
+    <Transaction>1899 12 30 00:00:00.000.899,E:\Documents\Embarcadero\Studio\Projects\ProtocleaButterflyMap\ProtocleaButterflyMap.pas=E:\Documents\Embarcadero\Studio\Projects\ProtocleaButterflyMap.pas</Transaction>
+    <Transaction>1899 12 30 00:00:00.000.014,E:\Documents\Embarcadero\Studio\Projects\ProtocleaButterflyMapOld\Main.dproj=E:\Documents\Embarcadero\Studio\Projects\ProtocleaButterflyMapOld\Main.dproj</Transaction>
+    <Transaction>1899 12 30 00:00:00.000.763,=E:\Documents\Embarcadero\Studio\Projects\ProtocleaButterflyMapOld\Untitled1.htm</Transaction>
+    <Transaction>1899 12 30 00:00:00.000.891,E:\Documents\Embarcadero\Studio\Projects\ProtocleaButterflyMap.pas=E:\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899 12 30 00:00:00.000.899,E:\Documents\Embarcadero\Studio\Projects\ProtocleaButterflyMap\ProtocleaButterflyMap.fmx=E:\Documents\Embarcadero\Studio\Projects\ProtocleaButterflyMap.fmx</Transaction>
   </Transactions>
 </BorlandProject>
