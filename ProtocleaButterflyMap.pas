@@ -148,12 +148,12 @@ end;
 
 procedure TForm1.btnPlotPointsClick(Sender: TObject);
 const
-  key = '';
+  key = 'AIzaSyBo2oV0QLZwhOsLjeV08m04nA4xlRd0PxA';
   prefix = 'https://maps.googleapis.com/maps/api/staticmap?';
   markerColour = 'markers=color:red';
 var
   ms: TMemoryStream;
-  url, province, markerString: string;
+  url, province, markerString, center: string;
   month, year: TDateTime;
   x, y: single;
   i: integer;
@@ -162,13 +162,15 @@ begin
   y := Panel1.Size.Height;
   markerString := '';
 
-  for i := 0 to sightings.Count do
-
+  for i := 0 to sightings.Count - 1 do
   begin
     if (sightings[i].province = cmbProvince.Selected.Text) and
     (DateUtils.YearOf(sightings[i].rec_date).ToString = cmbYear.Selected.Text) and
     (DateUtils.MonthOf(sightings[i].rec_date).ToString = cmbMonth.Selected.Text) then
     begin
+      center := sightings[i].province;
+      center := center.Replace(' ', '+');
+
       markerString := markerString + markerColour + '|label:' + sightings[i].rec_nr +
       '|' + sightings[i].latitude + ',' + sightings[i].longitude + '&';
     end;
@@ -176,7 +178,7 @@ begin
   end;
 
   //this URL cannot be more than 2048 characters, this needs to be taken into account
-  url := prefix + 'center=South+Africa&zoom=5&size=' +
+  url := prefix + 'center=' + center + 'South+Africa&zoom=5&size=' + //I need to specify South Africa or else the map tends to center on 'Murica
                   x.ToString + 'x' + y.ToString + '&maptype=roadmap&'+
                   markerString + 'key=' + key;
 
