@@ -33,13 +33,13 @@ type
     procedure btnPlotPointsClick(Sender: TObject);
     procedure btnExitClick(Sender: TObject);
     procedure btnBestClick(Sender: TObject);
+    procedure btnVerifyClick(Sender: TObject);
   private
     { Private declarations }
   public
     { Public declarations }
   end;
 
-//I am unsure if this is the correct place for this record type to be declared
 type
   sightingRecord = record
     rec_nr: string;
@@ -54,7 +54,7 @@ end;
 
 var
   Form1: TForm1;
-  sightings: TList<sightingRecord>;//Not a fan of globals, but I'm not sure how to abstract effectively yet
+  sightings: TList<sightingRecord>;
 
 implementation
 {$R *.fmx}
@@ -114,7 +114,7 @@ begin
         if not provinces.Contains(recordToAdd.province) then
           provinces.Add(recordToAdd.province);
 
-        if not months.Contains(StrToInt(Dateutils.MonthOf(recordToAdd.rec_date).ToString)) then
+        if not months.Contains(StrToInt(DateUtils.MonthOf(recordToAdd.rec_date).ToString)) then
           months.Add(StrToInt(DateUtils.MonthOf(recordToAdd.rec_date).ToString));
 
         if not years.Contains(StrToInt(DateUtils.YearOf(recordToAdd.rec_date).ToString)) then
@@ -206,6 +206,83 @@ begin
   end;
 end;
 
+procedure TForm1.btnVerifyClick(Sender: TObject);
+var
+i: integer;
+errorID: string;
+errorFound: boolean;
+begin
+  if sightings = nil then
+    exit;
+
+  errorFound := false;
+
+  for i := 0 to sightings.Count - 1 do
+  begin
+    if not TRegEx.IsMatch(sightings[i].rec_nr,'[0-9 ]+') then
+    begin
+      errorID := sightings[i].rec_nr;
+      errorFound := true;
+      break;
+    end;
+
+    //I am matching the following 3 expressions exactly, my assumption is this data set is meant to focus on them, anything else must be flagged
+    if not TRegEx.IsMatch(sightings[i].genus,'Belenois') then
+    begin
+      errorID := sightings[i].rec_nr;
+      errorFound := true;
+      break;
+    end;
+
+
+    if not TRegEx.IsMatch(sightings[i].species,'aurota') then
+    begin
+      errorID := sightings[i].rec_nr;
+      errorFound := true;
+      break;
+    end;
+
+    if not TRegEx.IsMatch(sightings[i].subspecies,'aurota') then
+    begin
+      errorID := sightings[i].rec_nr;
+      errorFound := true;
+      break;
+    end;
+
+    if not TRegEx.IsMatch(DateToStr(sightings[i].rec_date),'\d{1,2}\s\d?...?\s\d{4}') then
+    begin
+      errorID := sightings[i].rec_nr;
+      errorFound := true;
+      break;
+    end;
+
+    if not TRegEx.IsMatch(sightings[i].province,'[a-zA-Z -]{7,20}') then //note the literal space in RegEx
+    begin
+      errorID := sightings[i].rec_nr;
+      errorFound := true;
+      break;
+    end;
+
+    if not TRegEx.IsMatch(sightings[i].latitude,'^-?[0-9]{0,3},\d{1,13}$') then
+    begin
+      errorID := sightings[i].rec_nr;
+      errorFound := true;
+      break;
+    end;
+
+    if not TRegEx.IsMatch(sightings[i].longitude,'^-?[0-9]{0,3},\d{1,13}$') then
+    begin
+      errorID := sightings[i].rec_nr;
+      errorFound := true;
+      break;
+    end;
+
+    if errorFound then
+      ShowMessage('Possible error found in record ' + errorID);
+
+  end;
+end;
+
 procedure TForm1.btnBestClick(Sender: TObject);
 var
   i, value, provinceTotal, monthTotal, yearTotal: integer;
@@ -224,7 +301,7 @@ begin
   begin
 
     if not provinceDict.ContainsKey(sightings[i].province) then
-      provinceDict.Add(sightings[i].province, 0)
+      provinceDict.Add(sightings[i].province, 1)
     else
     begin
       key := sightings[i].province;
@@ -234,7 +311,7 @@ begin
     end;
 
     if not monthDict.ContainsKey(DateUtils.MonthOf(sightings[i].rec_date).ToString) then
-      monthDict.Add(DateUtils.MonthOf(sightings[i].rec_date).ToString, 0)
+      monthDict.Add(DateUtils.MonthOf(sightings[i].rec_date).ToString, 1)
     else
     begin
       key := DateUtils.MonthOf(sightings[i].rec_date).ToString;
@@ -244,7 +321,7 @@ begin
     end;
 
     if not yearDict.ContainsKey(DateUtils.YearOf(sightings[i].rec_date).ToString) then
-      yearDict.Add(DateUtils.yearOf(sightings[i].rec_date).ToString, 0)
+      yearDict.Add(DateUtils.yearOf(sightings[i].rec_date).ToString, 1)
     else
     begin
       key := DateUtils.YearOf(sightings[i].rec_date).ToString;
