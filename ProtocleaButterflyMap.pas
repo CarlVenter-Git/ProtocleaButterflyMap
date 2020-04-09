@@ -8,7 +8,7 @@ uses
   FMX.Controls.Presentation, FMX.StdCtrls, ComObj, FMX.Objects, IdBaseComponent,
   IdComponent, IdTCPConnection, IdTCPClient, IdHTTP, IdIOHandler,
   IdIOHandlerSocket, IdIOHandlerStack, IdSSL, IdSSLOpenSSL, FMX.ListBox, DateUtils,
-  Generics.Collections;
+  Generics.Collections, RegularExpressions;
 
 type
   TForm1 = class(TForm)
@@ -27,11 +27,12 @@ type
     Label2: TLabel;
     Label3: TLabel;
     btnVerify: TButton;
-    Button1: TButton;
-    Button2: TButton;
+    btnBest: TButton;
+    btnExit: TButton;
     procedure btnLoadClick(Sender: TObject);
     procedure btnPlotPointsClick(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
+    procedure btnExitClick(Sender: TObject);
+    procedure btnBestClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -119,7 +120,6 @@ begin
         if not years.Contains(StrToInt(DateUtils.YearOf(recordToAdd.rec_date).ToString)) then
           years.Add(StrToInt(DateUtils.YearOf(recordToAdd.rec_date).ToString));
 
-
         sightings.Add(recordToAdd);
       end;
 
@@ -139,6 +139,10 @@ begin
         cmbProvince.Items.Add(province);
 
     finally
+      provinces.Free;
+      years.Free;
+      months.Free;
+
       excel.Quit;
       excel := Unassigned;
     end;
@@ -148,22 +152,27 @@ end;
 
 procedure TForm1.btnPlotPointsClick(Sender: TObject);
 const
-  key = 'AIzaSyBo2oV0QLZwhOsLjeV08m04nA4xlRd0PxA';
+  key = '';
   prefix = 'https://maps.googleapis.com/maps/api/staticmap?';
   markerColour = 'markers=color:red';
 var
   ms: TMemoryStream;
-  url, province, markerString, center: string;
-  month, year: TDateTime;
+  url, markerString, center: string;
   x, y: single;
   i: integer;
 begin
+  //Exit the method if data has not been loaded
+  if sightings = nil then
+    exit;
+
   x := Panel1.Size.Width;
   y := Panel1.Size.Height;
+
   markerString := '';
 
   for i := 0 to sightings.Count - 1 do
   begin
+
     if (sightings[i].province = cmbProvince.Selected.Text) and
     (DateUtils.YearOf(sightings[i].rec_date).ToString = cmbYear.Selected.Text) and
     (DateUtils.MonthOf(sightings[i].rec_date).ToString = cmbMonth.Selected.Text) then
@@ -177,10 +186,10 @@ begin
 
   end;
 
-  //this URL cannot be more than 2048 characters, this needs to be taken into account
+  //URL cannot be more than 2048 characters, this needs to be taken into account
   url := prefix + 'center=' + center + 'South+Africa&zoom=5&size=' + //I need to specify South Africa or else the map tends to center on 'Murica
-                  x.ToString + 'x' + y.ToString + '&maptype=roadmap&'+
-                  markerString + 'key=' + key;
+         x.ToString + 'x' + y.ToString + '&maptype=roadmap&'+
+         markerString + 'key=' + key;
 
   ms := TMemoryStream.Create;
 
@@ -197,7 +206,84 @@ begin
   end;
 end;
 
-procedure TForm1.Button2Click(Sender: TObject);
+procedure TForm1.btnBestClick(Sender: TObject);
+var
+  i, value, provinceTotal, monthTotal, yearTotal: integer;
+  key, bestProvince, bestYear, bestMonth: string;
+  provinceDict, yearDict, MonthDict: TDictionary<string, Integer>;
+begin
+  //Exit the method if data has not been loaded
+  if sightings = nil then
+    exit;
+
+  provinceDict := TDictionary<string, Integer>.Create;
+  yearDict := TDictionary<string, Integer>.Create;
+  monthDict := TDictionary<string, Integer>.Create;
+
+  for i := 0 to sightings.Count - 1 do
+  begin
+
+    if not provinceDict.ContainsKey(sightings[i].province) then
+      provinceDict.Add(sightings[i].province, 0)
+    else
+    begin
+      key := sightings[i].province;
+      provinceDict.TryGetValue(key, value);
+
+      provinceDict.AddOrSetValue(key, value + 1);
+    end;
+
+    if not monthDict.ContainsKey(DateUtils.MonthOf(sightings[i].rec_date).ToString) then
+      monthDict.Add(DateUtils.MonthOf(sightings[i].rec_date).ToString, 0)
+    else
+    begin
+      key := DateUtils.MonthOf(sightings[i].rec_date).ToString;
+      monthDict.TryGetValue(key, value);
+
+      monthDict.AddOrSetValue(key, value + 1);
+    end;
+
+    if not yearDict.ContainsKey(DateUtils.YearOf(sightings[i].rec_date).ToString) then
+      yearDict.Add(DateUtils.yearOf(sightings[i].rec_date).ToString, 0)
+    else
+    begin
+      key := DateUtils.YearOf(sightings[i].rec_date).ToString;
+      yearDict.TryGetValue(key, value);
+
+      yearDict.AddOrSetValue(key, value + 1);
+    end;
+  end;
+
+  for key in provinceDict.Keys do
+  begin
+    if value < provinceDict.Items[key] then
+      provinceTotal := provinceDict.Items[key];
+      bestProvince := key;
+  end;
+
+  for key in monthDict.Keys do
+  begin
+    if value < monthDict.Items[key] then
+      monthTotal := monthDict.Items[key];
+      bestMonth := key;
+  end;
+
+  for key in yearDict.Keys do
+  begin
+    if value < yearDict.Items[key] then
+      yearTotal := yearDict.Items[key];
+      bestYear := key;
+  end;
+
+  Showmessage('Province with highest sightings: ' + bestProvince + ' with ' +
+              IntToStr(provinceTotal) + ' total.' + sLineBreak +
+              'Month with the most sightings: ' + bestMonth + ' with ' +
+              IntToStr(monthTotal) + ' total.' + sLineBreak +
+              'year with the most sightings: ' + bestYear + ' with ' +
+              IntToStr(yearTotal) + ' total.');
+end;
+
+procedure TForm1.btnExitClick(Sender: TObject);
 begin
  Form1.Close;
 end;
