@@ -152,7 +152,7 @@ end;
 
 procedure TForm1.btnPlotPointsClick(Sender: TObject);
 const
-  key = '';
+  key = 'Place API Key Here';
   prefix = 'https://maps.googleapis.com/maps/api/staticmap?';
   markerColour = 'markers=color:red';
 var
